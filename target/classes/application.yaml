@@ -15,6 +15,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  sql:
+    init:
+      mode: always
 
 gemini:
   api-key: AIzaSyC6b1a-NLN6V5-G0eXQ8l_mbQIfXG6QmRA
