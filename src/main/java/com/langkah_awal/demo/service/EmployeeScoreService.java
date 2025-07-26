@@ -65,7 +65,7 @@ public class EmployeeScoreService {
             Double kpiScore = Math.floor((employeeScore.getKpiScore() * 0.7) * 100) / 100.0;
             Double reviewScore = Math.floor(((employeeScore.getReviewScore() / 5) * 100 * 0.15) * 100) / 100.0;
             Double kudosScore = Math.floor((employeeScore.getKudosScore() / totalEmployees * 100 * 0.1) * 100) / 100.0;
-            Double absenceScore = employeeScore.getAbsenceScore();
+            Double absenceScore = Math.floor(employeeScore.getAbsenceScore() * 100) / 100.0;
 
             employeeScoreBean.setEmployeeId(employeeScore.getEmployeeId());
             employeeScoreBean.setName(employeeScore.getName());
