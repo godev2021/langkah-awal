@@ -46,3 +46,12 @@ CREATE TABLE three_sixty_review (
                                     review_development TEXT,
                                     type VARCHAR(255)
 );
+
+CREATE TABLE employee_attendance (
+                                    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                    employee_id BIGINT,
+                                    total_absence INT DEFAULT 0,
+                                    total_sick INT DEFAULT 0,
+                                    total_wfh INT DEFAULT 0,
+                                    total_late_days INT DEFAULT 0
+);
