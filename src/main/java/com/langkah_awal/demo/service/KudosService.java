@@ -27,11 +27,21 @@ public class KudosService {
         kudos.setMessage(kudosBean.getMessage());
         kudos.setCategory(kudosBean.getCategory());
         kudos.setVisibility(kudosBean.getVisibility());
+        kudos.setScore(kudosScore(kudos.getFromEmployeeId()));
         return kudosRepository.save(kudos);
+    }
+
+    public List<KudosBean> findKudosThisYear() {
+        List<Kudos> kudosList = kudosRepository.findKudosThisYear();
+        return this.getKudosBeans(kudosList);
     }
 
     public List<KudosBean> findKudosThisYear(long toEmployeeId) {
         List<Kudos> kudosList = kudosRepository.findKudosThisYear(toEmployeeId);
+        return this.getKudosBeans(kudosList);
+    }
+
+    private List<KudosBean> getKudosBeans(List<Kudos> kudosList) {
         List<KudosBean> kudosBeanList = new ArrayList<>(kudosList.size());
 
         kudosList.forEach(kudos -> {
@@ -41,6 +51,23 @@ public class KudosService {
         });
 
         return kudosBeanList;
+    }
+
+    public double calculateKudosScore(long employeeId) {
+        return kudosRepository.findKudosThisYear()
+                .stream()
+                .mapToDouble(Kudos::getScore)
+                .sum();
+    }
+
+    private double kudosScore(long fromEmployeeId) {
+        String jobLevel = employeeRepository.findEmployeeByEmployeeId(fromEmployeeId).getJobLevel();
+
+        return switch (jobLevel) {
+            case "Manager" -> 3;
+            case "C Level" -> 5;
+            default -> 1;
+        };
     }
 
     private KudosBean mapEntityToBean(Kudos kudos, String fromEmployeeName, String toEmployeeName) {

@@ -25,3 +25,13 @@ CREATE TABLE kudos (
                        visibility VARCHAR(10)
 );
 
+CREATE TABLE employee_score (
+                                id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                employee_id BIGINT,
+                                name VARCHAR(255),
+                                kpi_score DOUBLE,
+                                review_score DOUBLE,
+                                kudos_score DOUBLE,
+                                absence_score DOUBLE,
+                                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

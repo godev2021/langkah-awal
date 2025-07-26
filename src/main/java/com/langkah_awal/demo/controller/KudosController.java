@@ -33,4 +33,16 @@ public class KudosController {
         List<KudosBean> kudosList = kudosService.findKudosThisYear(employeeId);
         return ResponseEntity.ok(new ApiResponse<>(true, kudosList, null));
     }
+
+    @GetMapping("/list")
+    public ResponseEntity<ApiResponse<List<KudosBean>>> listKudos() {
+        List<KudosBean> kudosList = kudosService.findKudosThisYear();
+        return ResponseEntity.ok(new ApiResponse<>(true, kudosList, null));
+    }
+
+    @GetMapping("/count/{employeeId}")
+    public ResponseEntity<ApiResponse<Double>> countKudos(@PathVariable long employeeId) {
+        double score = kudosService.calculateKudosScore(employeeId);
+        return ResponseEntity.ok(new ApiResponse<>(true, score, null));
+    }
 }

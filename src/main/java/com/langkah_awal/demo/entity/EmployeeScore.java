@@ -6,25 +6,24 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "kudos")
+@Table(name = "employee_score")
 @Getter
 @Setter
-public class Kudos {
+public class EmployeeScore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private Long fromEmployeeId;
-    private Long toEmployeeId;
-    private String message;
-    private String category;
-    private String visibility = "PUBLIC";
-    private Double score;
+    private Long id;
+    private Long employeeId;
+    private String name;
+    private Double kpiScore;
+    private Double reviewScore; // review 360
+    private Double kudosScore;
+    private Double absenceScore;
     private LocalDateTime timestamp = LocalDateTime.now();
 }
