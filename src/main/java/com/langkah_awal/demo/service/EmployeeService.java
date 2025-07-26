@@ -97,18 +97,23 @@ public class EmployeeService {
             feedbacks.add(threeSixtyReview.getReviewDevelopment());
         });
 
-        String summarizedReview = promptService.summarizeFeedbackPrompt(employeeName, feedbacks);
         EmployeeScore employeeScore = employeeScoreService.getEmployeeScoreThisYear(employeeId);
+
         if (null != employeeScore) {
-            employeeScore.setSummarizedReview(summarizedReview);
-            employeeScoreRepository.save(employeeScore);
-        } else {
-            EmployeeScore newEmployeeScore = new EmployeeScore();
-            newEmployeeScore.setEmployeeId(employeeId);
-            newEmployeeScore.setName(employeeName);
-            newEmployeeScore.setSummarizedReview(summarizedReview);
-            employeeScoreRepository.save(newEmployeeScore);
+            if (Strings.isEmpty(employeeScore.getSummarizedReview())) {
+                String summarizedReview = promptService.summarizeFeedbackPrompt(employeeName, feedbacks);
+                employeeScore.setSummarizedReview(summarizedReview);
+                employeeScoreRepository.save(employeeScore);
+            }
+            return;
         }
+
+        String summarizedReview = promptService.summarizeFeedbackPrompt(employeeName, feedbacks);
+        EmployeeScore newEmployeeScore = new EmployeeScore();
+        newEmployeeScore.setEmployeeId(employeeId);
+        newEmployeeScore.setName(employeeName);
+        newEmployeeScore.setSummarizedReview(summarizedReview);
+        employeeScoreRepository.save(newEmployeeScore);
     }
 
     private void mapBeanToEntity(EmployeeBean bean, Employee entity) {
