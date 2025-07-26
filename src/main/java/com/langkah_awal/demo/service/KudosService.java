@@ -54,7 +54,7 @@ public class KudosService {
     }
 
     public double calculateKudosScore(long employeeId) {
-        return kudosRepository.findKudosThisYear()
+        return kudosRepository.findKudosThisYear(employeeId)
                 .stream()
                 .mapToDouble(Kudos::getScore)
                 .sum();
