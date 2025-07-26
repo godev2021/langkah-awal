@@ -11,5 +11,5 @@ CREATE TABLE employee (
                           department_name VARCHAR(255),
                           division_name VARCHAR(255),
                           active BOOLEAN,
-                          mvpOfTheYear BOOLEAN
+                          mvp_of_the_year BOOLEAN
 );
