@@ -18,3 +18,7 @@ spring:
   sql:
     init:
       mode: always
+
+gemini:
+  api-key: AIzaSyC6b1a-NLN6V5-G0eXQ8l_mbQIfXG6QmRA
+  endpoint: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
