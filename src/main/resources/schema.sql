@@ -39,6 +39,7 @@ CREATE TABLE employee_score (
 CREATE TABLE three_sixty_review (
                                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
                                     employee_id BIGINT,
+                                    employee_review_id BIGINT,
                                     review_score DOUBLE,
                                     review_contribution TEXT,
                                     review_strength TEXT,
