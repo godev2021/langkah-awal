@@ -9,4 +9,6 @@ VALUES
 INSERT INTO three_sixty_review (employee_id, review_score, review_contribution, review_strength, review_development, type)
 VALUES (1, 4.2, 'Selalu aktif dalam diskusi tim dan menyumbang ide-ide solutif.','Kemampuan komunikasi dan kolaborasi sangat kuat.', 'Perlu meningkatkan keterampilan teknis di bidang backend.', 'peer'),
        (2, 3.8, 'Berpartisipasi baik dalam proyek lintas tim.', 'Mampu menjaga motivasi tim.', 'Butuh pelatihan lebih dalam time management.', 'manager'),
-       (3, 4.5, 'Mendorong efisiensi kerja tim.', 'Punya kepemimpinan alami.', 'Perlu lebih terbuka terhadap feedback.', 'self');
+       (3, 4.5, 'Mendorong efisiensi kerja tim.', 'Punya kepemimpinan alami.', 'Perlu lebih terbuka terhadap feedback.', 'self'),
+       (4, 2.1,'Kurang terlibat dalam kegiatan tim dan jarang hadir saat diskusi.', 'Memiliki kemampuan teknis dasar yang cukup.', 'Perlu meningkatkan komunikasi dan kolaborasi dengan rekan kerja.','peer'),
+       (5, 1.8,'Kontribusi minim dalam sprint terakhir dan kurang inisiatif.','Cukup teliti dalam beberapa tugas administratif.','Butuh pembinaan dalam hal tanggung jawab pekerjaan dan komitmen.', 'manager');
