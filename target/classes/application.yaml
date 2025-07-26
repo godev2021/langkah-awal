@@ -1,0 +1,21 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:trackingdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+gemini:
+  api-key: AIzaSyC6b1a-NLN6V5-G0eXQ8l_mbQIfXG6QmRA
+  endpoint: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
