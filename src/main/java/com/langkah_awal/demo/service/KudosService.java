@@ -45,8 +45,8 @@ public class KudosService {
         List<KudosBean> kudosBeanList = new ArrayList<>(kudosList.size());
 
         kudosList.forEach(kudos -> {
-            String fromEmployeeName = employeeRepository.findEmployeeByEmployeeId(kudos.getFromEmployeeId()).getName();
-            String toEmployeeName = employeeRepository.findEmployeeByEmployeeId(kudos.getToEmployeeId()).getName();
+            String fromEmployeeName = employeeRepository.findEmployeeById(kudos.getFromEmployeeId()).getName();
+            String toEmployeeName = employeeRepository.findEmployeeById(kudos.getToEmployeeId()).getName();
             kudosBeanList.add( mapEntityToBean(kudos, fromEmployeeName, toEmployeeName));
         });
 
@@ -61,7 +61,7 @@ public class KudosService {
     }
 
     private double kudosScore(long fromEmployeeId) {
-        String jobLevel = employeeRepository.findEmployeeByEmployeeId(fromEmployeeId).getJobLevel();
+        String jobLevel = employeeRepository.findEmployeeById(fromEmployeeId).getJobLevel();
 
         return switch (jobLevel) {
             case "Manager" -> 3;

@@ -1,9 +1,12 @@
 package com.langkah_awal.demo.service;
 
 import com.langkah_awal.demo.entity.Employee;
+import com.langkah_awal.demo.entity.ThreeSixtyReview;
 import com.langkah_awal.demo.exception.DuplicateTrackingNumberException;
 import com.langkah_awal.demo.model.EmployeeBean;
+import com.langkah_awal.demo.model.ThreeSixtyBean;
 import com.langkah_awal.demo.repository.EmployeeRepository;
+import com.langkah_awal.demo.repository.ThreeSixtyReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,10 +21,11 @@ import java.util.List;
 @Slf4j
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private final ThreeSixtyReviewRepository threeSixtyReviewRepository;
 
     @Transactional
     public void createOrUpdateEmployee(@RequestBody EmployeeBean employeeBean) {
-        employeeRepository.findByNik(employeeBean.getNik()).ifPresentOrElse(employee -> {
+        employeeRepository.findById(employeeBean.getId()).ifPresentOrElse(employee -> {
             mapBeanToEntity(employeeBean, employee);
             employeeRepository.save(employee);
         }, () -> {
@@ -41,14 +45,30 @@ public class EmployeeService {
         return employees;
     }
 
-    public EmployeeBean findEmployeeByNik(String nik) {
-        return employeeRepository.findByNik(nik)
-                .map(employee -> {
-                    EmployeeBean bean = new EmployeeBean();
-                    mapEntityToBean(employee, bean);
-                    return bean;
+    public EmployeeBean findEmployeeById(Long id) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new DuplicateTrackingNumberException("Duplicate employee id: " + id));
+
+        EmployeeBean bean = new EmployeeBean();
+        mapEntityToBean(employee, bean);
+
+        List<ThreeSixtyReview> reviews = threeSixtyReviewRepository.findByEmployeeReviewId(employee.getId());
+        List<ThreeSixtyBean> reviewBeans = reviews.stream()
+                .map(review -> {
+                    ThreeSixtyBean respThreeSixty = new ThreeSixtyBean();
+                    respThreeSixty.setEmployeeId(employee.getId());
+                    respThreeSixty.setReviewerId(review.getEmployeeReviewId());
+                    respThreeSixty.setReviewScore(review.getReviewScore());
+                    respThreeSixty.setReviewContribution(review.getReviewStrength());
+                    respThreeSixty.setReviewStrength(review.getReviewStrength());
+                    respThreeSixty.setReviewDevelopment(review.getReviewDevelopment());
+                    respThreeSixty.setType(review.getType());
+                    return respThreeSixty;
                 })
-                .orElseThrow(() -> new DuplicateTrackingNumberException("Duplicate employee nik: " + nik));
+                .toList();
+
+        bean.setThreeSixtyReviews(reviewBeans);
+        return bean;
     }
 
     private void mapBeanToEntity(EmployeeBean bean, Employee entity) {
@@ -63,7 +83,7 @@ public class EmployeeService {
     }
 
     private void mapEntityToBean(Employee entity, EmployeeBean bean) {
-        bean.setEmployeeId(entity.getId());
+        bean.setId(entity.getId());
         bean.setNik(entity.getNik());
         bean.setName(entity.getName());
         bean.setReportingManager(entity.getReportingManager());

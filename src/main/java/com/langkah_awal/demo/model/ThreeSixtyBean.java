@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class ThreeSixtyBean {
     private Long employeeId;
+    private Long reviewerId;
     private Double reviewScore;
     private String reviewContribution;
     private String reviewStrength;

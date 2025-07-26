@@ -24,17 +24,4 @@ public class ThreeSixtyReviewService {
         threeSixtyReview.setReviewDevelopment(threeSixtyBean.getReviewDevelopment());
         threeSixtyReviewRepository.save(threeSixtyReview);
     }
-
-    public ThreeSixtyBean getThreeSixtyByEmployeeId(Long id) {
-        ThreeSixtyBean threeSixtyBean = new ThreeSixtyBean();
-        threeSixtyReviewRepository.findByEmployeeId(id).ifPresent(threeSixtyReview -> {
-            threeSixtyBean.setEmployeeId(threeSixtyReview.getEmployeeId());
-            threeSixtyBean.setReviewScore(threeSixtyReview.getReviewScore());
-            threeSixtyBean.setReviewContribution(threeSixtyReview.getReviewContribution());
-            threeSixtyBean.setReviewStrength(threeSixtyReview.getReviewStrength());
-            threeSixtyBean.setReviewDevelopment(threeSixtyReview.getReviewDevelopment());
-            threeSixtyBean.setType(threeSixtyReview.getType());
-        });
-        return threeSixtyBean;
-    }
 }

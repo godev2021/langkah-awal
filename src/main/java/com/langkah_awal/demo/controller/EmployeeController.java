@@ -34,9 +34,9 @@ public class EmployeeController {
         return ResponseEntity.ok(new ApiResponse<>(true, employees, null));
     }
 
-    @GetMapping("/{nik}")
-    public ResponseEntity<ApiResponse<EmployeeBean>> getEmployee(@PathVariable String nik) {
-        EmployeeBean employeeByNik = employeeService.findEmployeeByNik(nik);
-        return ResponseEntity.ok(new ApiResponse<>(true, employeeByNik, null));
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<ApiResponse<EmployeeBean>> getEmployee(@PathVariable long employeeId) {
+        EmployeeBean employeeBean = employeeService.findEmployeeById(employeeId);
+        return ResponseEntity.ok(new ApiResponse<>(true, employeeBean, null));
     }
 }

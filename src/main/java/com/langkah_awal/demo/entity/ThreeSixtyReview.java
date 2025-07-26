@@ -19,6 +19,7 @@ public class ThreeSixtyReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private Long employeeId;
+    private Long employeeReviewId; //employee yang di review
     private Double reviewScore;
     @Column(columnDefinition = "TEXT")
     private String reviewContribution;

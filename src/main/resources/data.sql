@@ -6,9 +6,9 @@ VALUES
     (4, 'Dian Sari', 'NIK004', 1, 'Lead Frontend Engineer', 'Specialist', 'Product Development & Operation', 'Frontend Engineering', false, false),
     (5, 'Hisyam Maulana', 'NIK005', 1, 'Backend Engineer', 'Associate', 'Product Development & Operation', 'Backend Engineering', false, false);
 
-INSERT INTO three_sixty_review (employee_id, review_score, review_contribution, review_strength, review_development, type)
-VALUES (1, 4.2, 'Selalu aktif dalam diskusi tim dan menyumbang ide-ide solutif.','Kemampuan komunikasi dan kolaborasi sangat kuat.', 'Perlu meningkatkan keterampilan teknis di bidang backend.', 'peer'),
-       (2, 3.8, 'Berpartisipasi baik dalam proyek lintas tim.', 'Mampu menjaga motivasi tim.', 'Butuh pelatihan lebih dalam time management.', 'manager'),
-       (3, 4.5, 'Mendorong efisiensi kerja tim.', 'Punya kepemimpinan alami.', 'Perlu lebih terbuka terhadap feedback.', 'self'),
-       (4, 2.1,'Kurang terlibat dalam kegiatan tim dan jarang hadir saat diskusi.', 'Memiliki kemampuan teknis dasar yang cukup.', 'Perlu meningkatkan komunikasi dan kolaborasi dengan rekan kerja.','peer'),
-       (5, 1.8,'Kontribusi minim dalam sprint terakhir dan kurang inisiatif.','Cukup teliti dalam beberapa tugas administratif.','Butuh pembinaan dalam hal tanggung jawab pekerjaan dan komitmen.', 'manager');
+INSERT INTO three_sixty_review (employee_id, employee_review_id,review_score, review_contribution, review_strength, review_development, type)
+VALUES (1, 3,4.2, 'Selalu aktif dalam diskusi tim dan menyumbang ide-ide solutif.','Kemampuan komunikasi dan kolaborasi sangat kuat.', 'Perlu meningkatkan keterampilan teknis di bidang backend.', 'peer'),
+       (2, 3,3.8, 'Berpartisipasi baik dalam proyek lintas tim.', 'Mampu menjaga motivasi tim.', 'Butuh pelatihan lebih dalam time management.', 'manager'),
+       (3, 2,4.5, 'Mendorong efisiensi kerja tim.', 'Punya kepemimpinan alami.', 'Perlu lebih terbuka terhadap feedback.', 'self'),
+       (4, 3,2.1,'Kurang terlibat dalam kegiatan tim dan jarang hadir saat diskusi.', 'Memiliki kemampuan teknis dasar yang cukup.', 'Perlu meningkatkan komunikasi dan kolaborasi dengan rekan kerja.','peer'),
+       (5, 2,1.8,'Kontribusi minim dalam sprint terakhir dan kurang inisiatif.','Cukup teliti dalam beberapa tugas administratif.','Butuh pembinaan dalam hal tanggung jawab pekerjaan dan komitmen.', 'manager');
