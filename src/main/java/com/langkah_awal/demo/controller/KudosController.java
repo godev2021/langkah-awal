@@ -1,7 +1,5 @@
 package com.langkah_awal.demo.controller;
 
-import com.langkah_awal.demo.entity.Kudos;
-import com.langkah_awal.demo.model.EmployeeBean;
 import com.langkah_awal.demo.model.KudosBean;
 import com.langkah_awal.demo.model.general.ApiResponse;
 import com.langkah_awal.demo.service.KudosService;
@@ -18,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping({"/kudos"})
+@RequestMapping({"/api/kudos"})
 public class KudosController {
     private final KudosService kudosService;
 

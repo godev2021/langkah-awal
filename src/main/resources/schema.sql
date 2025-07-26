@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS kudos;
 
 CREATE TABLE employee (
-                          employee_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
                           name VARCHAR(255),
                           nik VARCHAR(255) UNIQUE,
                           reporting_manager BIGINT,
@@ -34,4 +34,14 @@ CREATE TABLE employee_score (
                                 kudos_score DOUBLE,
                                 absence_score DOUBLE,
                                 timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE three_sixty_review (
+                                    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                    employee_id BIGINT,
+                                    review_score DOUBLE,
+                                    review_contribution TEXT,
+                                    review_strength TEXT,
+                                    review_development TEXT,
+                                    type VARCHAR(255)
 );

@@ -63,7 +63,7 @@ public class EmployeeService {
     }
 
     private void mapEntityToBean(Employee entity, EmployeeBean bean) {
-        bean.setEmployeeId(entity.getEmployeeId());
+        bean.setEmployeeId(entity.getId());
         bean.setNik(entity.getNik());
         bean.setName(entity.getName());
         bean.setReportingManager(entity.getReportingManager());

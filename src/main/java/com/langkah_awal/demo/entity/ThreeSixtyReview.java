@@ -11,21 +11,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "three_sixty_review")
 @Getter
 @Setter
-public class Employee {
+public class ThreeSixtyReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String name;
-    @Column(unique = true)
-    private String nik;
-    private Long reportingManager;
-    private String jobTitle;
-    private String jobLevel;
-    private String departmentName;
-    private String divisionName;
-    private boolean active = true;
-    private boolean mvpOfTheYear;
+    private Long employeeId;
+    private Double reviewScore;
+    @Column(columnDefinition = "TEXT")
+    private String reviewContribution;
+    @Column(columnDefinition = "TEXT")
+    private String reviewStrength;
+    @Column(columnDefinition = "TEXT")
+    private String reviewDevelopment;
+    //review category
+    private String type;
 }
