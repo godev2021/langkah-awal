@@ -19,4 +19,5 @@ public class EmployeeBean {
     private String divisionName;
     private boolean active;
     List<ThreeSixtyBean> threeSixtyReviews = new ArrayList<>();
+    private String summarizedReview; // review by AI
 }

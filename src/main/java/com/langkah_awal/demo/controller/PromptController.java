@@ -16,7 +16,7 @@ public class PromptController {
     private final PromptService promptService;
 
     @PostMapping({"/generate"})
-    public Mono<String> generate(@RequestBody PromptRequest.Employee request) {
+    public String generate(@RequestBody PromptRequest.Employee request) {
         return this.promptService.summarizeFeedbackPrompt(request.getEmployeeName(), request.getFeedbacks());
     }
 }

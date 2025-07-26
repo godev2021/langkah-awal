@@ -39,4 +39,10 @@ public class EmployeeController {
         EmployeeBean employeeBean = employeeService.findEmployeeById(employeeId);
         return ResponseEntity.ok(new ApiResponse<>(true, employeeBean, null));
     }
+
+    @GetMapping("/summarize/{employeeId}")
+    public ResponseEntity<ApiResponse<String>> summarizedReview(@PathVariable long employeeId) {
+        employeeService.summarizeEmployee(employeeId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Silahkan tunggu hasilnya..", null));
+    }
 }

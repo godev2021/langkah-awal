@@ -12,7 +12,7 @@ import java.util.List;
 public class EmployeeScoreService {
     private final EmployeeScoreRepository employeeScoreRepository;
 
-    public List<EmployeeScore> getEmployeeScoreThisYear(long employeeId) {
+    public EmployeeScore getEmployeeScoreThisYear(long employeeId) {
         return employeeScoreRepository.findThisYearByEmployeeId(employeeId);
     }
 }

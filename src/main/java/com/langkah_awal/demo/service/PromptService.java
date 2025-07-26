@@ -32,7 +32,7 @@ public class PromptService {
         this.webClient = webClientBuilder.baseUrl(this.geminiEndpoint).build();
     }
 
-    public Mono<String> askGemini(String prompt) {
+    public String askGemini(String prompt) {
         try {
             Map<String, Object> requestBody = Map.of("contents", List.of(Map.of("parts", List.of(Map.of("text", prompt)))));
             return this.webClient
@@ -52,14 +52,14 @@ public class PromptService {
                             log.error(e.getMessage());
                             return e.getMessage();
                         }
-                    });
+                    }).block();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return Mono.error(e);
+            return e.getMessage();
         }
     }
 
-    public Mono<String> summarizeFeedbackPrompt(String employeeName, List<String> feedbacks) {
+    public String summarizeFeedbackPrompt(String employeeName, List<String> feedbacks) {
         String feedbackList = feedbacks.stream()
                 .map(f -> "- \"" + f + "\"")
                 .collect(Collectors.joining("\n"));

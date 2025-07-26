@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "employee_score")
@@ -26,4 +28,6 @@ public class EmployeeScore {
     private Double kudosScore;
     private Double absenceScore;
     private LocalDateTime timestamp = LocalDateTime.now();
+    @Column(columnDefinition = "TEXT")
+    private String summarizedReview;
 }

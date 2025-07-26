@@ -1,16 +1,21 @@
 package com.langkah_awal.demo.service;
 
 import com.langkah_awal.demo.entity.Employee;
+import com.langkah_awal.demo.entity.EmployeeScore;
 import com.langkah_awal.demo.entity.ThreeSixtyReview;
 import com.langkah_awal.demo.exception.DuplicateTrackingNumberException;
 import com.langkah_awal.demo.model.EmployeeBean;
 import com.langkah_awal.demo.model.ThreeSixtyBean;
 import com.langkah_awal.demo.repository.EmployeeRepository;
+import com.langkah_awal.demo.repository.EmployeeScoreRepository;
 import com.langkah_awal.demo.repository.ThreeSixtyReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
@@ -20,8 +25,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class EmployeeService {
+    private final EmployeeScoreRepository employeeScoreRepository;
     private final EmployeeRepository employeeRepository;
     private final ThreeSixtyReviewRepository threeSixtyReviewRepository;
+    private final EmployeeScoreService employeeScoreService;
+    private final PromptService promptService;
 
     @Transactional
     public void createOrUpdateEmployee(@RequestBody EmployeeBean employeeBean) {
@@ -53,6 +61,7 @@ public class EmployeeService {
         mapEntityToBean(employee, bean);
 
         List<ThreeSixtyReview> reviews = threeSixtyReviewRepository.findByEmployeeReviewId(employee.getId());
+        EmployeeScore employeeScore = employeeScoreService.getEmployeeScoreThisYear(employee.getId());
         List<ThreeSixtyBean> reviewBeans = reviews.stream()
                 .map(review -> {
                     ThreeSixtyBean respThreeSixty = new ThreeSixtyBean();
@@ -68,7 +77,38 @@ public class EmployeeService {
                 .toList();
 
         bean.setThreeSixtyReviews(reviewBeans);
+
+        if (null != employeeScore && Strings.isNotEmpty(employeeScore.getSummarizedReview())) {
+            bean.setSummarizedReview(employeeScore.getSummarizedReview());
+        }
+
         return bean;
+    }
+
+    @Async
+    public void summarizeEmployee(long employeeId) {
+        String employeeName = employeeRepository.findEmployeeById(employeeId).getName();
+        List<ThreeSixtyReview> threeSixtyReviews = threeSixtyReviewRepository.findByEmployeeId(employeeId);
+        List<String> feedbacks = new ArrayList<>();
+
+        threeSixtyReviews.forEach(threeSixtyReview -> {
+            feedbacks.add(threeSixtyReview.getReviewStrength());
+            feedbacks.add(threeSixtyReview.getReviewContribution());
+            feedbacks.add(threeSixtyReview.getReviewDevelopment());
+        });
+
+        String summarizedReview = promptService.summarizeFeedbackPrompt(employeeName, feedbacks);
+        EmployeeScore employeeScore = employeeScoreService.getEmployeeScoreThisYear(employeeId);
+        if (null != employeeScore) {
+            employeeScore.setSummarizedReview(summarizedReview);
+            employeeScoreRepository.save(employeeScore);
+        } else {
+            EmployeeScore newEmployeeScore = new EmployeeScore();
+            newEmployeeScore.setEmployeeId(employeeId);
+            newEmployeeScore.setName(employeeName);
+            newEmployeeScore.setSummarizedReview(summarizedReview);
+            employeeScoreRepository.save(newEmployeeScore);
+        }
     }
 
     private void mapBeanToEntity(EmployeeBean bean, Employee entity) {

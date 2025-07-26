@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface EmployeeScoreRepository extends JpaRepository<EmployeeScore, Long> {
     @Query("SELECT e FROM EmployeeScore e WHERE e.employeeId = :employeeId AND FUNCTION('YEAR', e.timestamp) = FUNCTION('YEAR', CURRENT_DATE)")
-    List<EmployeeScore> findThisYearByEmployeeId(@Param("employeeId") Long employeeId);
+    EmployeeScore findThisYearByEmployeeId(@Param("employeeId") Long employeeId);
 }
