@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -62,10 +64,10 @@ public class EmployeeScoreService {
         employeeScoreRepository.findEmployeeScoreByEmployeeId(employeeId).ifPresent(employeeScore -> {
             long totalEmployees = employeeRepository.countTotalEmployees();
 
-            Double kpiScore = Math.floor((employeeScore.getKpiScore() * 0.7) * 100) / 100.0;
-            Double reviewScore = Math.floor(((employeeScore.getReviewScore() / 5) * 100 * 0.15) * 100) / 100.0;
-            Double kudosScore = Math.floor((employeeScore.getKudosScore() / totalEmployees * 100 * 0.1) * 100) / 100.0;
-            Double absenceScore = Math.floor(employeeScore.getAbsenceScore() * 100) / 100.0;
+            Double kpiScore = to2Decimal(employeeScore.getKpiScore() * 0.7);
+            Double reviewScore = to2Decimal((employeeScore.getReviewScore() / 5) * 100 * 0.15);
+            Double kudosScore = to2Decimal(employeeScore.getKudosScore() / totalEmployees * 100 * 0.1);
+            Double absenceScore = to2Decimal(employeeScore.getAbsenceScore());
 
             employeeScoreBean.setEmployeeId(employeeScore.getEmployeeId());
             employeeScoreBean.setName(employeeScore.getName());
@@ -110,5 +112,11 @@ public class EmployeeScoreService {
         } else {
             return "Under Perform";
         }
+    }
+
+    private Double to2Decimal(double value) {
+        return BigDecimal.valueOf(value)
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 }

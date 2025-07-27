@@ -47,7 +47,7 @@ public class KudosService {
         kudosList.forEach(kudos -> {
             String fromEmployeeName = employeeRepository.findEmployeeById(kudos.getFromEmployeeId()).getName();
             String toEmployeeName = employeeRepository.findEmployeeById(kudos.getToEmployeeId()).getName();
-            kudosBeanList.add( mapEntityToBean(kudos, fromEmployeeName, toEmployeeName));
+            kudosBeanList.add(mapEntityToBean(kudos, fromEmployeeName, toEmployeeName));
         });
 
         return kudosBeanList;
@@ -81,6 +81,7 @@ public class KudosService {
         kudosBean.setTimestamp(kudos.getTimestamp());
         kudosBean.setFromEmployeeName(fromEmployeeName);
         kudosBean.setToEmployeeName(toEmployeeName);
+        kudosBean.setTotalKudos(calculateKudosScore(kudos.getToEmployeeId()));
         return kudosBean;
     }
 
