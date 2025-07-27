@@ -97,10 +97,10 @@ public class EmployeeService {
         employeeScoreRepository.findEmployeeScoreByEmployeeId(employee.getId()).ifPresent(performance -> {
             long totalEmployees = employeeRepository.countTotalEmployees();
 
-            Double kpiScore = to2Decimal(Optional.ofNullable(performance.getKpiScore()).orElse(0.0) * 0.7);
-            Double reviewScore = to2Decimal((Optional.ofNullable(performance.getReviewScore()).orElse(0.0) / 5) * 100 * 0.15);
-            Double kudosScore = to2Decimal((Optional.ofNullable(performance.getKudosScore()).orElse(0.0) / totalEmployees) * 100 * 0.1);
-            Double absenceScore = to2Decimal(Optional.ofNullable(performance.getAbsenceScore()).orElse(0.0));
+            Double kpiScore = to2Decimal(validationValue(performance.getKpiScore()) * 0.7);
+            Double reviewScore = to2Decimal((validationValue(performance.getReviewScore()) / 5) * 100 * 0.15);
+            Double kudosScore = to2Decimal((validationValue(performance.getKudosScore()) / totalEmployees) * 100 * 0.1);
+            Double absenceScore = to2Decimal(validationValue(performance.getAbsenceScore()));
 
             employeeScoreBean.setEmployeeId(performance.getEmployeeId());
             employeeScoreBean.setName(performance.getName());
@@ -111,7 +111,6 @@ public class EmployeeService {
             employeeScoreBean.setFinalTotalScore(kpiScore + reviewScore + kudosScore + absenceScore);
             employeeScoreBean.setClustering(clusteringScore(employeeScoreBean.getFinalTotalScore()));
         });
-
         bean.setPerformance(employeeScoreBean);
 
         EmployeeAttendanceBean attendanceBean = new EmployeeAttendanceBean();
@@ -178,5 +177,9 @@ public class EmployeeService {
         bean.setDepartmentName(entity.getDepartmentName());
         bean.setDivisionName(entity.getDivisionName());
         bean.setActive(entity.isActive());
+    }
+
+    private Double validationValue(Double value) {
+        return Optional.ofNullable(value).orElse(0.0);
     }
 }
