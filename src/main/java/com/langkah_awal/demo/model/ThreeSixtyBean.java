@@ -13,4 +13,7 @@ public class ThreeSixtyBean {
     private String reviewStrength;
     private String reviewDevelopment;
     private String type;
+    private String reviewerName;
+    private String reviewerJobTitle;
+    private String reviewerDepartmentName;
 }

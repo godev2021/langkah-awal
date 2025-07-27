@@ -114,7 +114,7 @@ public class EmployeeScoreService {
         }
     }
 
-    private Double to2Decimal(double value) {
+    public static Double to2Decimal(double value) {
         return BigDecimal.valueOf(value)
                 .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();

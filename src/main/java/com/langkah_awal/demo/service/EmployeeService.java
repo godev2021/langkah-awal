@@ -4,8 +4,11 @@ import com.langkah_awal.demo.entity.Employee;
 import com.langkah_awal.demo.entity.EmployeeScore;
 import com.langkah_awal.demo.entity.ThreeSixtyReview;
 import com.langkah_awal.demo.exception.DuplicateTrackingNumberException;
+import com.langkah_awal.demo.model.EmployeeAttendanceBean;
 import com.langkah_awal.demo.model.EmployeeBean;
+import com.langkah_awal.demo.model.EmployeeScoreBean;
 import com.langkah_awal.demo.model.ThreeSixtyBean;
+import com.langkah_awal.demo.repository.EmployeeAttendanceRepository;
 import com.langkah_awal.demo.repository.EmployeeRepository;
 import com.langkah_awal.demo.repository.EmployeeScoreRepository;
 import com.langkah_awal.demo.repository.ThreeSixtyReviewRepository;
@@ -15,11 +18,13 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.langkah_awal.demo.service.EmployeeScoreService.clusteringScore;
+import static com.langkah_awal.demo.service.EmployeeScoreService.to2Decimal;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +35,7 @@ public class EmployeeService {
     private final ThreeSixtyReviewRepository threeSixtyReviewRepository;
     private final EmployeeScoreService employeeScoreService;
     private final PromptService promptService;
+    private final EmployeeAttendanceRepository employeeAttendanceRepository;
 
     @Transactional
     public void createOrUpdateEmployee(@RequestBody EmployeeBean employeeBean) {
@@ -65,13 +71,17 @@ public class EmployeeService {
         List<ThreeSixtyBean> reviewBeans = reviews.stream()
                 .map(review -> {
                     ThreeSixtyBean respThreeSixty = new ThreeSixtyBean();
-                    respThreeSixty.setEmployeeId(employee.getId());
+                    respThreeSixty.setEmployeeId(review.getEmployeeId());
                     respThreeSixty.setReviewerId(review.getEmployeeReviewId());
                     respThreeSixty.setReviewScore(review.getReviewScore());
                     respThreeSixty.setReviewContribution(review.getReviewStrength());
                     respThreeSixty.setReviewStrength(review.getReviewStrength());
                     respThreeSixty.setReviewDevelopment(review.getReviewDevelopment());
                     respThreeSixty.setType(review.getType());
+                    Employee reviewEmployee = employeeRepository.findEmployeeById(review.getEmployeeId());
+                    respThreeSixty.setReviewerName(reviewEmployee.getName());
+                    respThreeSixty.setReviewerJobTitle(reviewEmployee.getJobTitle());
+                    respThreeSixty.setReviewerDepartmentName(reviewEmployee.getDepartmentName());
                     return respThreeSixty;
                 })
                 .toList();
@@ -82,6 +92,37 @@ public class EmployeeService {
             bean.setSummarizedReview(employeeScore.getSummarizedReview());
         }
 
+        EmployeeScoreBean employeeScoreBean = new EmployeeScoreBean();
+        employeeScoreRepository.findEmployeeScoreByEmployeeId(employee.getId())
+                .ifPresent(performance -> {
+                    long totalEmployees = employeeRepository.countTotalEmployees();
+
+                    Double kpiScore = to2Decimal(performance.getKpiScore() * 0.7);
+                    Double reviewScore = to2Decimal((performance.getReviewScore() / 5) * 100 * 0.15);
+                    Double kudosScore = to2Decimal(performance.getKudosScore() / totalEmployees * 100 * 0.1);
+                    Double absenceScore = to2Decimal(performance.getAbsenceScore());
+
+                    employeeScoreBean.setEmployeeId(performance.getEmployeeId());
+                    employeeScoreBean.setName(performance.getName());
+                    employeeScoreBean.setKpiScore(kpiScore);
+                    employeeScoreBean.setReviewScore(reviewScore);
+                    employeeScoreBean.setKudosScore(kudosScore);
+                    employeeScoreBean.setAbsenceScore(absenceScore);
+                    employeeScoreBean.setFinalTotalScore(kpiScore + reviewScore + kudosScore + absenceScore);
+                    employeeScoreBean.setClustering(clusteringScore(employeeScoreBean.getFinalTotalScore()));
+                });
+
+        bean.setPerformance(employeeScoreBean);
+
+        EmployeeAttendanceBean attendanceBean = new EmployeeAttendanceBean();
+        employeeAttendanceRepository.findEmployeeAttendanceByEmployeeId(employeeScoreBean.getEmployeeId())
+                .ifPresent(employeeAttendance -> {
+                    attendanceBean.setTotalAbsence(employeeAttendance.getTotalAbsence());
+                    attendanceBean.setTotalWfh(employeeAttendance.getTotalWfh());
+                    attendanceBean.setTotalSick(employeeAttendance.getTotalSick());
+                    attendanceBean.setTotalLateDays(employeeAttendance.getTotalLateDays());
+                });
+        bean.setAttendance(attendanceBean);
         return bean;
     }
 

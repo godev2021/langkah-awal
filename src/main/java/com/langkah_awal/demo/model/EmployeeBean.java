@@ -20,4 +20,6 @@ public class EmployeeBean {
     private boolean active;
     List<ThreeSixtyBean> threeSixtyReviews = new ArrayList<>();
     private String summarizedReview; // review by AI
+    private EmployeeScoreBean performance;
+    private EmployeeAttendanceBean attendance;
 }
