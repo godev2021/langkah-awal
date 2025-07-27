@@ -1,7 +1,9 @@
 package com.langkah_awal.demo.controller;
 
 import com.langkah_awal.demo.model.EmployeeBean;
+import com.langkah_awal.demo.model.EmployeeScoreBean;
 import com.langkah_awal.demo.model.general.ApiResponse;
+import com.langkah_awal.demo.service.EmployeeScoreService;
 import com.langkah_awal.demo.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequestMapping("/api/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
+    private final EmployeeScoreService employeeScoreService;
 
     @PostMapping("")
     public ResponseEntity<?> createEmployee(@RequestBody EmployeeBean employeeBean) {
@@ -44,5 +47,17 @@ public class EmployeeController {
     public ResponseEntity<ApiResponse<String>> summarizedReview(@PathVariable long employeeId) {
         employeeService.summarizeEmployee(employeeId);
         return ResponseEntity.ok(new ApiResponse<>(true, "Silahkan tunggu hasilnya..", null));
+    }
+
+    @PostMapping("/review")
+    public ResponseEntity<ApiResponse<EmployeeBean>> createReview(@RequestBody EmployeeScoreBean employeeScoreBean) {
+        employeeScoreService.createOrUpdateEmployeeScore(employeeScoreBean);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/review-detail/{employeeId}")
+    public ResponseEntity<ApiResponse<EmployeeScoreBean>> reviewDetail(@PathVariable long employeeId) {
+        EmployeeScoreBean employeeScoreBean = employeeScoreService.getEmployeeScoreById(employeeId);
+        return ResponseEntity.ok(new ApiResponse<>(true, employeeScoreBean, null));
     }
 }
