@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.langkah_awal.demo.service.EmployeeScoreService.clusteringScore;
 import static com.langkah_awal.demo.service.EmployeeScoreService.to2Decimal;
@@ -93,24 +94,23 @@ public class EmployeeService {
         }
 
         EmployeeScoreBean employeeScoreBean = new EmployeeScoreBean();
-        employeeScoreRepository.findEmployeeScoreByEmployeeId(employee.getId())
-                .ifPresent(performance -> {
-                    long totalEmployees = employeeRepository.countTotalEmployees();
+        employeeScoreRepository.findEmployeeScoreByEmployeeId(employee.getId()).ifPresent(performance -> {
+            long totalEmployees = employeeRepository.countTotalEmployees();
 
-                    Double kpiScore = to2Decimal(performance.getKpiScore() * 0.7);
-                    Double reviewScore = to2Decimal((performance.getReviewScore() / 5) * 100 * 0.15);
-                    Double kudosScore = to2Decimal(performance.getKudosScore() / totalEmployees * 100 * 0.1);
-                    Double absenceScore = to2Decimal(performance.getAbsenceScore());
+            Double kpiScore = to2Decimal(Optional.ofNullable(performance.getKpiScore()).orElse(0.0) * 0.7);
+            Double reviewScore = to2Decimal((Optional.ofNullable(performance.getReviewScore()).orElse(0.0) / 5) * 100 * 0.15);
+            Double kudosScore = to2Decimal((Optional.ofNullable(performance.getKudosScore()).orElse(0.0) / totalEmployees) * 100 * 0.1);
+            Double absenceScore = to2Decimal(Optional.ofNullable(performance.getAbsenceScore()).orElse(0.0));
 
-                    employeeScoreBean.setEmployeeId(performance.getEmployeeId());
-                    employeeScoreBean.setName(performance.getName());
-                    employeeScoreBean.setKpiScore(kpiScore);
-                    employeeScoreBean.setReviewScore(reviewScore);
-                    employeeScoreBean.setKudosScore(kudosScore);
-                    employeeScoreBean.setAbsenceScore(absenceScore);
-                    employeeScoreBean.setFinalTotalScore(kpiScore + reviewScore + kudosScore + absenceScore);
-                    employeeScoreBean.setClustering(clusteringScore(employeeScoreBean.getFinalTotalScore()));
-                });
+            employeeScoreBean.setEmployeeId(performance.getEmployeeId());
+            employeeScoreBean.setName(performance.getName());
+            employeeScoreBean.setKpiScore(kpiScore);
+            employeeScoreBean.setReviewScore(reviewScore);
+            employeeScoreBean.setKudosScore(kudosScore);
+            employeeScoreBean.setAbsenceScore(absenceScore);
+            employeeScoreBean.setFinalTotalScore(kpiScore + reviewScore + kudosScore + absenceScore);
+            employeeScoreBean.setClustering(clusteringScore(employeeScoreBean.getFinalTotalScore()));
+        });
 
         bean.setPerformance(employeeScoreBean);
 
