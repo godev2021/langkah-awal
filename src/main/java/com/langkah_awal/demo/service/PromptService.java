@@ -67,7 +67,7 @@ public class PromptService {
         String prompt =
         """
             Saya akan memberikan hasil penilaian 360 derajat dari beberapa rekan kerja terhadap seorang karyawan bernama %s.
-            Tolong lakukan analisa berdasarkan pendekatan SWOT (Strength, Weakness, Opportunity, Threat) dan hasilkan ringkasan dengan format yang SAMA dan TERSTRUKTUR seperti di bawah ini.
+            Tolong lakukan analisa berdasarkan pendekatan SWOT (Strength, Weakness, Opportunity, Threat), Emotion & Sentiment Analysis terhadap feedback yang ada, Insight untuk perkembangan karir dan rekomendasikan sertifikasi atau pelatihan yang cocok jika perlu, dan hasilkan ringkasan dengan format yang SAMA dan TERSTRUKTUR seperti di bawah ini.
             Tampilkan hasilnya dalam bentuk teks biasa, tanpa ada enter, tanpa simbol atau karakter tambahan seperti bintang (*), backtick (`), atau markdown lainnya.
         
             Format yang harus diikuti:

@@ -89,7 +89,7 @@ public class EmployeeService {
 
         bean.setThreeSixtyReviews(reviewBeans);
 
-        if (null != employeeScore && Strings.isNotEmpty(employeeScore.getSummarizedReview())) {
+        if (null != employeeScore && Strings.isNotEmpty(employeeScore.getSummarizedReview()) && !reviewBeans.isEmpty()) {
             bean.setSummarizedReview(employeeScore.getSummarizedReview());
         }
 
