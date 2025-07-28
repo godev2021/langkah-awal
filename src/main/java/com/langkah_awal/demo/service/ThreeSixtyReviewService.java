@@ -17,11 +17,13 @@ public class ThreeSixtyReviewService {
     @Transactional
     public void create(ThreeSixtyBean threeSixtyBean) {
         ThreeSixtyReview threeSixtyReview = new ThreeSixtyReview();
-        threeSixtyReview.setEmployeeId(threeSixtyBean.getEmployeeId());
+        threeSixtyReview.setEmployeeId(null != threeSixtyBean.getEmployeeId() ? threeSixtyBean.getEmployeeId() : 1);
+        threeSixtyReview.setEmployeeReviewId(null != threeSixtyBean.getReviewerId() ? threeSixtyBean.getReviewerId() : 3);
         threeSixtyReview.setReviewScore(threeSixtyBean.getReviewScore());
         threeSixtyReview.setReviewContribution(threeSixtyBean.getReviewContribution());
         threeSixtyReview.setReviewStrength(threeSixtyBean.getReviewStrength());
         threeSixtyReview.setReviewDevelopment(threeSixtyBean.getReviewDevelopment());
+        threeSixtyReview.setType(threeSixtyBean.getType());
         threeSixtyReviewRepository.save(threeSixtyReview);
     }
 }
