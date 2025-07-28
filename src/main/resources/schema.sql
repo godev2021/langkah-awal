@@ -37,7 +37,8 @@ CREATE TABLE employee_score (
                                 review_score DOUBLE,
                                 kudos_score DOUBLE,
                                 absence_score DOUBLE,
-                                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                summarized_review TEXT
 );
 
 CREATE TABLE three_sixty_review (
