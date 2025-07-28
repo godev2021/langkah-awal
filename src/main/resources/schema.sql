@@ -1,6 +1,9 @@
 -- schema.sql
-DROP TABLE IF EXISTS employee;
+DROP TABLE IF EXISTS employee_attendance;
+DROP TABLE IF EXISTS three_sixty_review;
+DROP TABLE IF EXISTS employee_score;
 DROP TABLE IF EXISTS kudos;
+DROP TABLE IF EXISTS employee;
 
 CREATE TABLE employee (
                           id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -22,6 +25,7 @@ CREATE TABLE kudos (
                        message TEXT NOT NULL,
                        category VARCHAR(50) NOT NULL,
                        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                       score DOUBLE,
                        visibility VARCHAR(10)
 );
 
