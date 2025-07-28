@@ -26,7 +26,7 @@ VALUES (1, 3,4.2, 'Selalu aktif dalam diskusi tim dan menyumbang ide-ide solutif
 
 INSERT INTO employee_attendance (employee_id, total_absence, total_sick, total_wfh, total_late_days)
 VALUES
-      (1, 0, 0, 0, 0),
+      (1, 0, 0, 1, 0),
       (2, 0, 2, 1, 1),
       (3, 1, 13, 0, 15),
       (4, 5, 0, 0, 4),
