@@ -114,7 +114,7 @@ public class EmployeeService {
         bean.setPerformance(employeeScoreBean);
 
         EmployeeAttendanceBean attendanceBean = new EmployeeAttendanceBean();
-        employeeAttendanceRepository.findEmployeeAttendanceByEmployeeId(employeeScoreBean.getEmployeeId())
+        employeeAttendanceRepository.findEmployeeAttendanceByEmployeeId(employee.getId())
                 .ifPresent(employeeAttendance -> {
                     attendanceBean.setTotalAbsence(employeeAttendance.getTotalAbsence());
                     attendanceBean.setTotalWfh(employeeAttendance.getTotalWfh());
@@ -128,7 +128,7 @@ public class EmployeeService {
     @Async
     public void summarizeEmployee(long employeeId) {
         String employeeName = employeeRepository.findEmployeeById(employeeId).getName();
-        List<ThreeSixtyReview> threeSixtyReviews = threeSixtyReviewRepository.findByEmployeeId(employeeId);
+        List<ThreeSixtyReview> threeSixtyReviews = threeSixtyReviewRepository.findByEmployeeReviewId(employeeId);
         List<String> feedbacks = new ArrayList<>();
 
         threeSixtyReviews.forEach(threeSixtyReview -> {

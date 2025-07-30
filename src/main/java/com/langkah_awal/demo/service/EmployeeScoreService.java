@@ -31,7 +31,7 @@ public class EmployeeScoreService {
             employeeScore.setEmployeeId(employeeScoreBean.getEmployeeId());
             employeeScore.setName(employeeScoreBean.getName());
             employeeScore.setKpiScore(employeeScoreBean.getKpiScore());
-            List<ThreeSixtyReview> threeSixtyReviews = threeSixtyReviewRepository.findByEmployeeId(employeeScoreBean.getEmployeeId());
+            List<ThreeSixtyReview> threeSixtyReviews = threeSixtyReviewRepository.findByEmployeeReviewId(employeeScoreBean.getEmployeeId());
             double averageThreeSixty = threeSixtyReviews.stream()
                     .mapToDouble(ThreeSixtyReview::getReviewScore)
                     .average()
@@ -46,7 +46,7 @@ public class EmployeeScoreService {
             employeeScore.setEmployeeId(employeeScoreBean.getEmployeeId());
             employeeScore.setName(employeeScoreBean.getName());
             employeeScore.setKpiScore(employeeScoreBean.getKpiScore());
-            List<ThreeSixtyReview> threeSixtyReviews = threeSixtyReviewRepository.findByEmployeeId(employeeScoreBean.getEmployeeId());
+            List<ThreeSixtyReview> threeSixtyReviews = threeSixtyReviewRepository.findByEmployeeReviewId(employeeScoreBean.getEmployeeId());
             double averageThreeSixty = threeSixtyReviews.stream()
                     .mapToDouble(ThreeSixtyReview::getReviewScore)
                     .average()
