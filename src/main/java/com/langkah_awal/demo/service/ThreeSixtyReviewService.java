@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,8 +32,19 @@ public class ThreeSixtyReviewService {
 
     @Transactional
     public void createBulk(List<ThreeSixtyBean> threeSixtyBeans) {
+        long employeeId = 14L;
+
         for (ThreeSixtyBean threeSixtyBean : threeSixtyBeans) {
-            create(threeSixtyBean);
+            ThreeSixtyReview threeSixtyReview = new ThreeSixtyReview();
+            threeSixtyReview.setEmployeeId(employeeId);
+            threeSixtyReview.setEmployeeReviewId(3L);
+            threeSixtyReview.setReviewScore(threeSixtyBean.getReviewScore());
+            threeSixtyReview.setReviewContribution(threeSixtyBean.getReviewContribution());
+            threeSixtyReview.setReviewStrength(threeSixtyBean.getReviewStrength());
+            threeSixtyReview.setReviewDevelopment(threeSixtyBean.getReviewDevelopment());
+            threeSixtyReview.setType(threeSixtyBean.getType());
+            threeSixtyReviewRepository.save(threeSixtyReview);
+            employeeId++;
         }
     }
 }
