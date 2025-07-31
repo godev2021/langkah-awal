@@ -34,6 +34,7 @@ public class PromptService {
 
     public String askGemini(String prompt) {
         try {
+            Thread.sleep(500);
             Map<String, Object> requestBody = Map.of("contents", List.of(Map.of("parts", List.of(Map.of("text", prompt)))));
             return this.webClient
                     .post()

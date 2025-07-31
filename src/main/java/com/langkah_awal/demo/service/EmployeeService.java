@@ -164,7 +164,7 @@ public class EmployeeService {
         EmployeeScore employeeScore = employeeScoreService.getEmployeeScoreThisYear(employeeId);
 
         if (null != employeeScore) {
-            if (Strings.isEmpty(employeeScore.getSummarizedReview())) {
+            if (Strings.isEmpty(employeeScore.getSummarizedReview()) && !threeSixtyReviews.isEmpty()) {
                 String summarizedReview = promptService.summarizeFeedbackPrompt(employeeName, feedbacks);
                 employeeScore.setSummarizedReview(summarizedReview);
                 employeeScoreRepository.save(employeeScore);
