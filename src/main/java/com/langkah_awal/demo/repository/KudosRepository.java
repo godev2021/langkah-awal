@@ -29,6 +29,7 @@ public interface KudosRepository extends JpaRepository<Kudos, Long> {
     @Query(
             value = "SELECT " +
                     "e.name AS employeeName, " +
+                    "k.category AS category, " +
                     "COUNT(DISTINCT k.from_employee_id) AS totalKudos, " +
                     "SUM(k.score) AS totalScore " +
                     "FROM kudos k " +
