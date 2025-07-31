@@ -2,6 +2,7 @@ package com.langkah_awal.demo.service;
 
 import com.langkah_awal.demo.entity.Kudos;
 import com.langkah_awal.demo.model.KudosBean;
+import com.langkah_awal.demo.model.projections.KudosLeaderboardProjections;
 import com.langkah_awal.demo.repository.EmployeeRepository;
 import com.langkah_awal.demo.repository.KudosRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,10 @@ public class KudosService {
     public List<KudosBean> findKudosThisYear() {
         List<Kudos> kudosList = kudosRepository.findKudosThisYear();
         return this.getKudosBeans(kudosList);
+    }
+
+    public List<KudosLeaderboardProjections> getKudosLeaderboardThisYear() {
+        return kudosRepository.findKudosLeaderboardThisYear();
     }
 
     public List<KudosBean> findKudosThisYear(long toEmployeeId) {
@@ -81,7 +86,6 @@ public class KudosService {
         kudosBean.setTimestamp(kudos.getTimestamp());
         kudosBean.setFromEmployeeName(fromEmployeeName);
         kudosBean.setToEmployeeName(toEmployeeName);
-        kudosBean.setTotalKudos(calculateKudosScore(kudos.getToEmployeeId()));
         return kudosBean;
     }
 

@@ -20,5 +20,4 @@ public class KudosBean {
 
     private String fromEmployeeName;
     private String toEmployeeName;
-    private Double totalKudos;
 }

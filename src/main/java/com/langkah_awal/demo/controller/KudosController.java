@@ -2,6 +2,7 @@ package com.langkah_awal.demo.controller;
 
 import com.langkah_awal.demo.model.KudosBean;
 import com.langkah_awal.demo.model.general.ApiResponse;
+import com.langkah_awal.demo.model.projections.KudosLeaderboardProjections;
 import com.langkah_awal.demo.service.KudosService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,12 @@ public class KudosController {
     public ResponseEntity<ApiResponse<Double>> countKudos(@PathVariable long employeeId) {
         double score = kudosService.calculateKudosScore(employeeId);
         return ResponseEntity.ok(new ApiResponse<>(true, score, null));
+    }
+
+    @GetMapping("/leaderboard")
+    public ResponseEntity<ApiResponse<List<KudosLeaderboardProjections>>> getLeaderboard() {
+        List<KudosLeaderboardProjections> kudosLeaderboardThisYear = kudosService.getKudosLeaderboardThisYear();
+        return ResponseEntity.ok(new ApiResponse<>(true, kudosLeaderboardThisYear, null));
+
     }
 }

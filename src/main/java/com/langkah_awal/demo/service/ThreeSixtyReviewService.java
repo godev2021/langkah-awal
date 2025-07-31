@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -25,5 +27,12 @@ public class ThreeSixtyReviewService {
         threeSixtyReview.setReviewDevelopment(threeSixtyBean.getReviewDevelopment());
         threeSixtyReview.setType(threeSixtyBean.getType());
         threeSixtyReviewRepository.save(threeSixtyReview);
+    }
+
+    @Transactional
+    public void createBulk(List<ThreeSixtyBean> threeSixtyBeans) {
+        for (ThreeSixtyBean threeSixtyBean : threeSixtyBeans) {
+            create(threeSixtyBean);
+        }
     }
 }

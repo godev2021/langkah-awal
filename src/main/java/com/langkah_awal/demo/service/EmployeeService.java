@@ -7,10 +7,12 @@ import com.langkah_awal.demo.exception.DuplicateTrackingNumberException;
 import com.langkah_awal.demo.model.EmployeeAttendanceBean;
 import com.langkah_awal.demo.model.EmployeeBean;
 import com.langkah_awal.demo.model.EmployeeScoreBean;
+import com.langkah_awal.demo.model.KudosCalculateBean;
 import com.langkah_awal.demo.model.ThreeSixtyBean;
 import com.langkah_awal.demo.repository.EmployeeAttendanceRepository;
 import com.langkah_awal.demo.repository.EmployeeRepository;
 import com.langkah_awal.demo.repository.EmployeeScoreRepository;
+import com.langkah_awal.demo.repository.KudosRepository;
 import com.langkah_awal.demo.repository.ThreeSixtyReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.langkah_awal.demo.service.EmployeeScoreService.clusteringScore;
 import static com.langkah_awal.demo.service.EmployeeScoreService.to2Decimal;
@@ -37,6 +40,7 @@ public class EmployeeService {
     private final EmployeeScoreService employeeScoreService;
     private final PromptService promptService;
     private final EmployeeAttendanceRepository employeeAttendanceRepository;
+    private final KudosRepository kudosRepository;
 
     @Transactional
     public void createOrUpdateEmployee(@RequestBody EmployeeBean employeeBean) {
@@ -122,6 +126,26 @@ public class EmployeeService {
                     attendanceBean.setTotalLateDays(employeeAttendance.getTotalLateDays());
                 });
         bean.setAttendance(attendanceBean);
+
+        KudosCalculateBean kudosCalculateBean = new KudosCalculateBean();
+
+        AtomicInteger kudosCLevel = new AtomicInteger();
+        AtomicInteger kudosManager = new AtomicInteger();
+        AtomicInteger kudosPeer = new AtomicInteger();
+        kudosRepository.findKudosByToEmployeeId(employee.getId()).forEach(kudos -> {
+            if (5 == kudos.getScore()) {
+                kudosCLevel.getAndIncrement();
+            } else if (3 == kudos.getScore()) {
+                kudosManager.getAndIncrement();
+            } else {
+                kudosPeer.getAndIncrement();
+            }
+        });
+        kudosCalculateBean.setKudosCLevel(kudosCLevel.get());
+        kudosCalculateBean.setKudosManager(kudosManager.get());
+        kudosCalculateBean.setKudosPeer(kudosPeer.get());
+        bean.setKudosResult(kudosCalculateBean);
+
         return bean;
     }
 

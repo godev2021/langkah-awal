@@ -22,4 +22,5 @@ public class EmployeeBean {
     private String summarizedReview; // review by AI
     private EmployeeScoreBean performance;
     private EmployeeAttendanceBean attendance;
+    private KudosCalculateBean kudosResult;
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -20,6 +22,12 @@ public class ThreeSixtyController {
     @PostMapping("")
     public ResponseEntity<?> createThreeSixty(@RequestBody ThreeSixtyBean threeSixtyBean) {
         threeSixtyReviewService.create(threeSixtyBean);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/bulk")
+    public ResponseEntity<?> createThreeSixtyBulk(@RequestBody List<ThreeSixtyBean> threeSixtyBeans) {
+        threeSixtyReviewService.createBulk(threeSixtyBeans);
         return ResponseEntity.ok().build();
     }
 }
