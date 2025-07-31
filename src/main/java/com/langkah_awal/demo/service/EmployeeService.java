@@ -163,21 +163,23 @@ public class EmployeeService {
 
         EmployeeScore employeeScore = employeeScoreService.getEmployeeScoreThisYear(employeeId);
 
-        if (null != employeeScore) {
-            if (Strings.isEmpty(employeeScore.getSummarizedReview()) && !threeSixtyReviews.isEmpty()) {
-                String summarizedReview = promptService.summarizeFeedbackPrompt(employeeName, feedbacks);
-                employeeScore.setSummarizedReview(summarizedReview);
-                employeeScoreRepository.save(employeeScore);
+        if (!threeSixtyReviews.isEmpty()) {
+            if (null != employeeScore) {
+                if (Strings.isEmpty(employeeScore.getSummarizedReview())) {
+                    String summarizedReview = promptService.summarizeFeedbackPrompt(employeeName, feedbacks);
+                    employeeScore.setSummarizedReview(summarizedReview);
+                    employeeScoreRepository.save(employeeScore);
+                }
+                return;
             }
-            return;
-        }
 
-        String summarizedReview = promptService.summarizeFeedbackPrompt(employeeName, feedbacks);
-        EmployeeScore newEmployeeScore = new EmployeeScore();
-        newEmployeeScore.setEmployeeId(employeeId);
-        newEmployeeScore.setName(employeeName);
-        newEmployeeScore.setSummarizedReview(summarizedReview);
-        employeeScoreRepository.save(newEmployeeScore);
+            String summarizedReview = promptService.summarizeFeedbackPrompt(employeeName, feedbacks);
+            EmployeeScore newEmployeeScore = new EmployeeScore();
+            newEmployeeScore.setEmployeeId(employeeId);
+            newEmployeeScore.setName(employeeName);
+            newEmployeeScore.setSummarizedReview(summarizedReview);
+            employeeScoreRepository.save(newEmployeeScore);
+        }
     }
 
     private void mapBeanToEntity(EmployeeBean bean, Employee entity) {
