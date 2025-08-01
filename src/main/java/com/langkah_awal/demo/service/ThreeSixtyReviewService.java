@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,7 +31,7 @@ public class ThreeSixtyReviewService {
 
     @Transactional
     public void createBulk(List<ThreeSixtyBean> threeSixtyBeans) {
-        long employeeId = 14L;
+        long employeeId = 12;
 
         for (ThreeSixtyBean threeSixtyBean : threeSixtyBeans) {
             ThreeSixtyReview threeSixtyReview = new ThreeSixtyReview();
